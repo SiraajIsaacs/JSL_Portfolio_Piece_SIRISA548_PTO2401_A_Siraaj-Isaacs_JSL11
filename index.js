@@ -10,7 +10,7 @@ import { initialData } from './initialData.js';
 // Function checks if local storage already has data, if not it loads initialData to localStorage
 function initializeData() {
   if (!localStorage.getItem('tasks')) {
-    localStorage.setItem('tasks', JSON.stringify(initialData)); 
+    localStorage.setItem('tasks', JSON.stringify(initialData));
     localStorage.setItem('showSideBar', 'true')
   } else {
     console.log('Data already exists in localStorage');
@@ -40,7 +40,7 @@ function fetchAndDisplayBoardsAndTasks() {
   displayBoards(boards);
   if (boards.length > 0) {
     const localStorageBoard = JSON.parse(localStorage.getItem("activeBoard"))
-    activeBoard = localStorageBoard ? localStorageBoard : boards[0]; 
+    activeBoard = localStorageBoard ? localStorageBoard : boards[0];
     elements.headerBoardName.textContent = activeBoard;
     styleActiveBoard(activeBoard);
     refreshTasksUI();
@@ -56,7 +56,7 @@ function displayBoards(boards) {
     const boardElement = document.createElement("button");
     boardElement.textContent = board;
     boardElement.classList.add("board-btn");
-    boardElement.addEventListener('click', () => { 
+    boardElement.addEventListener('click', () => {
       elements.headerBoardName.textContent = board;
       filterAndDisplayTasksByBoard(board);
       activeBoard = board //assigns active board
@@ -85,14 +85,14 @@ function filterAndDisplayTasksByBoard(boardName) {
     tasksContainer.classList.add('tasks-container');
     column.appendChild(tasksContainer);
 
-    filteredTasks.filter(task => task.status === status).forEach(task => { 
+    filteredTasks.filter(task => task.status === status).forEach(task => {
       const taskElement = document.createElement("div");
       taskElement.classList.add("task-div");
       taskElement.textContent = task.title;
       taskElement.setAttribute('data-task-id', task.id);
 
       // Listen for a click event on each task and open a modal
-      taskElement.addEventListener('click', () => { 
+      taskElement.addEventListener('click', () => {
         openEditTaskModal(task);
       });
 
@@ -108,17 +108,17 @@ function refreshTasksUI() {
 // Styles the active board by adding an active class
 // TASK: Fix Bugs
 function styleActiveBoard(boardName) {
-  document.querySelectorAll('.board-btn').forEach(btn => { 
+  document.querySelectorAll('.board-btn').forEach(btn => {
     if (btn.textContent === boardName) {
-      btn.classList.add('active') 
+      btn.classList.add('active')
     } else {
-      btn.classList.remove('active'); 
+      btn.classList.remove('active');
     }
   });
 }
 
 function addTaskToUI(task) {
-  const column = document.querySelector(`.column-div[data-status="${task.status}"]`); 
+  const column = document.querySelector(`.column-div[data-status="${task.status}"]`);
   if (!column) {
     console.error(`Column not found for status: ${task.status}`);
     return;
@@ -136,12 +136,12 @@ function addTaskToUI(task) {
   taskElement.className = 'task-div';
   taskElement.textContent = task.title; // Modify as needed
   taskElement.setAttribute('data-task-id', task.id);
-  
+
   taskElement.addEventListener('click', () => {
     openEditTaskModal(task);
   });
 
-  tasksContainer.appendChild(taskElement); 
+  tasksContainer.appendChild(taskElement);
 }
 
 function setupEventListeners() {
@@ -184,7 +184,7 @@ function setupEventListeners() {
 // Toggles tasks modal
 // Task: Fix bugs
 function toggleModal(show, modal = elements.modalWindow) {
-  modal.style.display = show ? 'block' : 'none'; 
+  modal.style.display = show ? 'block' : 'none';
 }
 
 /*************************************************************************************************************************************************
@@ -192,7 +192,7 @@ function toggleModal(show, modal = elements.modalWindow) {
  * **********************************************************************************************************************************************/
 
 function addTask(event) {
-  event.preventDefault(); 
+  event.preventDefault();
 
   // Generate a unique ID for the new task
   const tasks = getTasks();
@@ -222,26 +222,26 @@ function toggleSidebar(show) {
   const sidebar = document.getElementById('side-bar-div');
   sidebar.style.display = show ? 'block' : 'none';
   elements.showSideBarBtn.style.display = show ? 'none' : 'block';
-  localStorage.setItem('showSideBar', show); 
+  localStorage.setItem('showSideBar', show);
 }
 
 function toggleTheme() {
   const isLightTheme = document.body.classList.toggle('light-theme');
-  localStorage.setItem('light-theme', isLightTheme ? 'enabled' : 'disabled'); 
+  localStorage.setItem('light-theme', isLightTheme ? 'enabled' : 'disabled');
 }
 
 function openEditTaskModal(task) {
   // Set task details in modal inputs
   document.getElementById('edit-task-title-input').value = task.title;
   document.getElementById('edit-task-desc-input').value = task.description;
-  document.getElementById('edit-select-status').value = task.status;  
+  document.getElementById('edit-select-status').value = task.status;
 
   // Get button elements from the task modal
   const saveChangesBtn = document.getElementById('save-task-changes-btn');
   const deleteTaskBtn = document.getElementById('delete-task-btn');
 
   // Call saveTaskChanges upon click of Save Changes button
-  saveChangesBtn.onclick = () => saveTaskChanges(task.id); 
+  saveChangesBtn.onclick = () => saveTaskChanges(task.id);
 
   // Delete task using a helper function and close the task modal
   deleteTaskBtn.onclick = () => {
@@ -257,12 +257,12 @@ function saveTaskChanges(taskId) {
   // Get new user inputs
   const updatedTitle = document.getElementById('edit-task-title-input').value;
   const updatedDescription = document.getElementById('edit-task-desc-input').value;
-  const updatedStatus = document.getElementById('edit-select-status').value;  
+  const updatedStatus = document.getElementById('edit-select-status').value;
 
   // Get all tasks from local storage
   const tasks = getTasks();
 
-  // Find the task to update
+  // Find the task to update - Will update this after submission in order to encorporate the patchTask function, this works for now.
   const taskIndex = tasks.findIndex(task => task.id === taskId);
   if (taskIndex !== -1) {
     // Update task details
@@ -283,7 +283,7 @@ function saveTaskChanges(taskId) {
 
 /*************************************************************************************************************************************************/
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   init(); // init is called after the DOM is fully loaded
 });
 
