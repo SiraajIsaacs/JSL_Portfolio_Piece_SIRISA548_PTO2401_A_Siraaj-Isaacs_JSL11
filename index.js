@@ -253,6 +253,7 @@ function openEditTaskModal(task) {
   toggleModal(true, elements.editTaskModal); // Show the edit task modal
 }
 
+// Description only saves after adding the task.
 function saveTaskChanges(taskId) {
   // Get new user inputs
   const updatedTitle = document.getElementById('edit-task-title-input').value;
